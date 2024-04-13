@@ -44,15 +44,19 @@
       "properties": {
         "statusBarJSONPath.keysSeparators": {
           "type": "string",
-          "default": "dots",
-          "description": "Choose between `dots` or `indexes` for JSON keys.",
+          "default": "dart",
+          "description": "Choose between `dots`, `indexes`, `dart` or `dart null` for JSON keys.",
           "enum": [
             "dots",
-            "indexes"
+            "indexes",
+            "dart",
+            "dartnull"
           ],
           "enumDescriptions": [
             "Use dots (JS friendly) for keys separators",
-            "Use indexes (Python friendly) for keys separators"
+            "Use indexes (Python friendly) for keys separators",
+            "Use []! operator (dart friendly)",
+            "Use []? operator (dart friendly)"
           ],
           "scope": "resource"
         }

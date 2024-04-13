@@ -65,6 +65,10 @@ export function jsonPathTo(text: string, offset: number, separatorType: string) 
     return pathToStringDot(stack);
   } else if (separatorType === "indexes") {
     return pathToStringIndexes(stack);
+  } else if (separatorType === "dart") {
+    return pathToStringDart(stack);
+  } else if (separatorType === "dartnull") {
+    return pathToStringDartNullable(stack);
   } else {
     return "";
   }
@@ -76,7 +80,12 @@ function pathToStringDot(path: Frame[]): string {
     if (frame.colType === ColType.Object) {
       if (frame.key) {
         if (!frame.key.match(/^[a-zA-Z$#@&%~\-_][a-zA-Z\d$#@&%~\-_]*$/)) {
-          s += `["${frame.key}"]!`;
+          s += `["${frame.key}"]`;
+        } else {
+          if (s.length) {
+            s += ".";
+          }
+          s += frame.key;
         }
       }
     } else {
@@ -95,6 +104,42 @@ function pathToStringIndexes(path: Frame[]): string {
           s += `["${frame.key}"]`;
         } else {
           s += '["' + frame.key + '"]';
+        }
+      }
+    } else {
+      s += `[${frame.index}]`;
+    }
+  }
+  return s;
+}
+
+function pathToStringDart(path: Frame[]): string {
+  let s = "";
+  for (const frame of path) {
+    if (frame.colType === ColType.Object) {
+      if (frame.key) {
+        if (!frame.key.match(/^[a-zA-Z$#@&%~\-_][a-zA-Z\d$#@&%~\-_]*$/)) {
+          s += `["${frame.key}"]!`;
+        } else {
+          s += '["' + frame.key + '"]!';
+        }
+      }
+    } else {
+      s += `[${frame.index}]`;
+    }
+  }
+  return s;
+}
+
+function pathToStringDartNullable(path: Frame[]): string {
+  let s = "";
+  for (const frame of path) {
+    if (frame.colType === ColType.Object) {
+      if (frame.key) {
+        if (!frame.key.match(/^[a-zA-Z$#@&%~\-_][a-zA-Z\d$#@&%~\-_]*$/)) {
+          s += `["${frame.key}"]?`;
+        } else {
+          s += '["' + frame.key + '"]?';
         }
       }
     } else {
