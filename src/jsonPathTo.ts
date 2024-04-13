@@ -76,12 +76,7 @@ function pathToStringDot(path: Frame[]): string {
     if (frame.colType === ColType.Object) {
       if (frame.key) {
         if (!frame.key.match(/^[a-zA-Z$#@&%~\-_][a-zA-Z\d$#@&%~\-_]*$/)) {
-          s += `["${frame.key}"]`;
-        } else {
-          if (s.length) {
-            s += ".";
-          }
-          s += frame.key;
+          s += `["${frame.key}"]!`;
         }
       }
     } else {
